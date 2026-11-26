@@ -11,10 +11,33 @@
     gul: "kirmizi",
     lale: "mor",
     sakura: "pembe",
+    orkide: "pembe",
+    zambak: "beyaz",
+    lavanta: "mor",
+    nilufer: "turkuaz",
+    ortanca: "turkuaz",
+    karanfil: "kirmizi",
+    karisik: "pembe",
   };
 
+  // Karışık bukette 5 dal için seçilen özel çiçek karması (alt-sol, alt-sağ, sol, sağ, orta)
+  const MIXED_BOUQUET_TYPES = ["lale", "sakura", "zambak", "papatya", "gul"];
+
   const VALID_FLOWERS = new Set(Object.keys(FLOWER_DEFAULTS));
-  const VALID_THEMES = new Set(["turkuaz", "kirmizi", "pembe", "mor", "altin", "beyaz"]);
+  const VALID_THEMES = new Set([
+    "turkuaz",
+    "kirmizi",
+    "pembe",
+    "mor",
+    "altin",
+    "beyaz",
+    "safir",
+    "mercan",
+    "zumrut",
+    "fusya",
+    "bordo",
+    "buz",
+  ]);
 
   const THEME_LABELS = {
     turkuaz: "Gece Turkuazı",
@@ -23,6 +46,12 @@
     mor: "Mor Lavanta",
     altin: "Altın Işıltı",
     beyaz: "Saf Beyaz",
+    safir: "Safir Mavi",
+    mercan: "Mercan Günbatımı",
+    zumrut: "Zümrüt Yeşili",
+    fusya: "Neon Fuşya",
+    bordo: "Kadife Bordo",
+    buz: "Buz Mavisi",
   };
 
   let svgUidCounter = 0;
@@ -210,6 +239,240 @@
       `;
     }
 
+    if (flowerType === "orkide") {
+      // Orkide: Kelebek kanadı formunda egzotik yan yapraklar, 3 ince çanak yaprak ve benekli parlak dudak
+      return `
+        ${halo}
+        <!-- 3 dış çanak yaprak -->
+        <g>
+          <path d="M 0 2 C -11 -10 -12 -32 0 -46 C 12 -32 11 -10 0 2 Z"
+            fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.32" stroke-width="0.85" />
+          <path d="M -2 2 C -14 10 -26 24 -18 39 C -7 35 -1 20 -2 2 Z"
+            fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.3" stroke-width="0.85" />
+          <path d="M 2 2 C 14 10 26 24 18 39 C 7 35 1 20 2 2 Z"
+            fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.3" stroke-width="0.85" />
+        </g>
+        <!-- Geniş kelebek kanadı yaprakları ve ışıldayan merkez dudağı -->
+        <g class="petal-inner-layer" style="transform-origin:0px 0px;--delay:${delaySec}s">
+          <path d="M -2 0 C -18 -24 -48 -20 -46 3 C -44 21 -18 20 -2 2 Z"
+            fill="url(#${uid}-petal)" stroke="var(--petal-rim)" stroke-opacity="0.52" stroke-width="0.95" />
+          <path d="M 2 0 C 18 -24 48 -20 46 3 C 44 21 18 20 2 2 Z"
+            fill="url(#${uid}-petal)" stroke="var(--petal-rim)" stroke-opacity="0.52" stroke-width="0.95" />
+          <!-- Kanat damarları -->
+          <path d="M -6 0 Q -24 -5 -36 1 M 6 0 Q 24 -5 36 1" fill="none" stroke="var(--petal-rim)" stroke-opacity="0.32" stroke-width="0.9" />
+          <!-- Merkezi orkide dudağı (labellum) -->
+          <path d="M 0 -2 C -11 -1 -14 11 -9 20 C -5 25 -2 22 0 27 C 2 22 5 25 9 20 C 14 11 11 -1 0 -2 Z"
+            fill="url(#${uid}-petal-soft)" stroke="var(--petal-rim)" stroke-opacity="0.65" stroke-width="0.9" />
+          <ellipse cx="0" cy="6" rx="6.2" ry="7.5" fill="url(#${uid}-core)" />
+          <g fill="var(--petal-deep)" opacity="0.55">
+            <circle cx="-3" cy="12" r="1.1" /><circle cx="3" cy="12" r="1.1" /><circle cx="0" cy="15.5" r="1.2" />
+          </g>
+        </g>
+      `;
+    }
+
+    if (flowerType === "zambak") {
+      // Zambak: 6 uzun sivri yıldız yaprak + dışa uzanan ince polenli organlar
+      const back = [];
+      const front = [];
+      const stamens = [];
+      for (let i = 0; i < 3; i++) {
+        const a1 = i * 120 + 60;
+        const a2 = i * 120;
+        back.push(
+          `<g transform="rotate(${a1})">
+            <path d="M 0 2 C -12 -12 -11 -35 0 -51 C 11 -35 12 -12 0 2 Z"
+              fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.35" stroke-width="0.8" />
+          </g>`
+        );
+        front.push(
+          `<g transform="rotate(${a2})">
+            <path d="M 0 2 C -13 -13 -12 -38 0 -54 C 12 -38 13 -13 0 2 Z"
+              fill="url(#${uid}-petal)" stroke="var(--petal-rim)" stroke-opacity="0.58" stroke-width="0.95" />
+            <path d="M 0 -4 L 0 -42" stroke="var(--petal-rim)" stroke-opacity="0.45" stroke-width="1" stroke-linecap="round" />
+            <circle cx="-2.8" cy="-14" r="1" fill="var(--petal-deep)" opacity="0.45" />
+            <circle cx="2.8" cy="-18" r="1" fill="var(--petal-deep)" opacity="0.45" />
+          </g>`
+        );
+      }
+      for (let i = 0; i < 6; i++) {
+        const deg = i * 60 + 30;
+        stamens.push(
+          `<g transform="rotate(${deg})">
+            <path d="M 0 0 Q 4 -12 2 -23" fill="none" stroke="var(--petal-rim)" stroke-width="1" opacity="0.85" />
+            <ellipse cx="2" cy="-24" rx="2.6" ry="1.4" transform="rotate(-20 2 -24)" fill="url(#${uid}-core)" />
+          </g>`
+        );
+      }
+      return `
+        ${halo}
+        <g>${back.join("")}</g>
+        <g class="petal-inner-layer" style="transform-origin:0px 0px;--delay:${delaySec}s">
+          ${front.join("")}
+          ${stamens.join("")}
+          <circle cx="0" cy="0" r="5" fill="url(#${uid}-core)" />
+        </g>
+      `;
+    }
+
+    if (flowerType === "lavanta") {
+      // Lavanta: Dikey başak şeklinde katman katman dizilmiş ışıldayan minik tomurcuklar
+      const tiers = [
+        { y: -4, spread: 10.5, rx: 5.5, ry: 7.4, rot: 36 },
+        { y: -15, spread: 11.2, rx: 5.6, ry: 7.6, rot: 34 },
+        { y: -27, spread: 10.2, rx: 5.2, ry: 7.2, rot: 30 },
+        { y: -39, spread: 8.8, rx: 4.8, ry: 6.8, rot: 26 },
+        { y: -50, spread: 7.0, rx: 4.3, ry: 6.2, rot: 22 },
+        { y: -60, spread: 4.8, rx: 3.7, ry: 5.5, rot: 16 },
+      ];
+      const backBuds = tiers
+        .map(
+          (t) => `
+          <ellipse cx="${-t.spread}" cy="${t.y}" rx="${t.rx}" ry="${t.ry}"
+            transform="rotate(${-t.rot} ${-t.spread} ${t.y})"
+            fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.3" stroke-width="0.65" />
+          <ellipse cx="${t.spread}" cy="${t.y}" rx="${t.rx}" ry="${t.ry}"
+            transform="rotate(${t.rot} ${t.spread} ${t.y})"
+            fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.3" stroke-width="0.65" />`
+        )
+        .join("");
+
+      const frontBuds = tiers
+        .map(
+          (t, idx) => `
+          <ellipse cx="${(idx % 2 === 0 ? -3.2 : 3.2)}" cy="${t.y - 3}" rx="${(t.rx * 0.88).toFixed(1)}" ry="${(t.ry * 0.92).toFixed(1)}"
+            transform="rotate(${idx % 2 === 0 ? -12 : 12} ${idx % 2 === 0 ? -3.2 : 3.2} ${t.y - 3})"
+            fill="url(#${uid}-petal)" stroke="var(--petal-rim)" stroke-opacity="0.45" stroke-width="0.7" />
+          <ellipse cx="0" cy="${t.y - 5}" rx="${(t.rx * 0.72).toFixed(1)}" ry="${(t.ry * 0.82).toFixed(1)}"
+            fill="url(#${uid}-petal-soft)" opacity="0.92" />`
+        )
+        .join("");
+
+      return `
+        <g transform="translate(0, 14)">
+          <ellipse cx="0" cy="-34" rx="34" ry="56" fill="url(#${uid}-halo)" opacity="0.68" />
+          <line x1="0" y1="6" x2="0" y2="-66" stroke="var(--stem-light)" stroke-width="2.4" stroke-linecap="round" />
+          <g>${backBuds}</g>
+          <g class="petal-inner-layer" style="transform-origin:0px 0px;--delay:${delaySec}s">
+            ${frontBuds}
+            <ellipse cx="0" cy="-70" rx="4.2" ry="7.4" fill="url(#${uid}-petal-soft)" stroke="var(--petal-rim)" stroke-opacity="0.55" stroke-width="0.7" />
+            <circle cx="0" cy="-71" r="1.8" fill="var(--pollen-color)" opacity="0.9" />
+          </g>
+        </g>
+      `;
+    }
+
+    if (flowerType === "nilufer") {
+      // Nilüfer / Lotus: Çok katmanlı, simetrik ve yukarı doğru açılan mistik nilüfer yaprakları
+      return `
+        <g transform="translate(0, 10)">
+          <ellipse cx="0" cy="-16" rx="56" ry="44" fill="url(#${uid}-halo)" opacity="0.72" />
+          <!-- En dış açılan yan yapraklar -->
+          <g>
+            <path d="M 0 4 C -24 6 -48 -4 -52 -20 C -34 -22 -14 -12 0 4 Z"
+              fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.32" stroke-width="0.85" />
+            <path d="M 0 4 C 24 6 48 -4 52 -20 C 34 -22 14 -12 0 4 Z"
+              fill="url(#${uid}-petal-deep)" stroke="var(--petal-rim)" stroke-opacity="0.32" stroke-width="0.85" />
+            <path d="M 0 4 C -24 -4 -40 -26 -34 -44 C -18 -36 -6 -16 0 4 Z"
+              fill="url(#${uid}-petal)" stroke="var(--petal-rim)" stroke-opacity="0.42" stroke-width="0.9" />
+            <path d="M 0 4 C 24 -4 40 -26 34 -44 C 18 -36 6 -16 0 4 Z"
+              fill="url(#${uid}-petal)" stroke="var(--petal-rim)" stroke-opacity="0.42" stroke-width="0.9" />
+          </g>
+          <!-- İç taç yaprakları ve ışıldayan lotus kalbi -->
+          <g class="petal-inner-layer" style="transform-origin:0px 0px;--delay:${delaySec}s">
+            <path d="M 0 5 C -18 -6 -24 -32 -16 -50 C -4 -38 0 -16 0 5 Z"
+              fill="url(#${uid}-petal-soft)" stroke="var(--petal-rim)" stroke-opacity="0.52" stroke-width="0.95" />
+            <path d="M 0 5 C 18 -6 24 -32 16 -50 C 4 -38 0 -16 0 5 Z"
+              fill="url(#${uid}-petal-soft)" stroke="var(--petal-rim)" stroke-opacity="0.52" stroke-width="0.95" />
+            <ellipse cx="0" cy="-18" rx="11" ry="12" fill="url(#${uid}-core)" opacity="0.65" />
+            <path d="M 0 6 C -14 -8 -14 -34 0 -55 C 14 -34 14 -8 0 6 Z"
+              fill="url(#${uid}-petal-soft)" stroke="var(--petal-rim)" stroke-opacity="0.7" stroke-width="1" />
+            <ellipse cx="0" cy="-6" rx="6.5" ry="5" fill="url(#${uid}-core)" opacity="0.9" />
+          </g>
+        </g>
+      `;
+    }
+
+    if (flowerType === "ortanca") {
+      // Ortanca (Hydrangea): 15 küçük 4 yapraklı çiçekçikten oluşan dolgun bulutsu demet
+      const florets = [
+        // Dış halka
+        { x: -25, y: -12, s: 0.82, r: 12, layer: 0 },
+        { x: 25, y: -12, s: 0.82, r: -14, layer: 0 },
+        { x: -24, y: 12, s: 0.8, r: 26, layer: 0 },
+        { x: 24, y: 12, s: 0.8, r: -22, layer: 0 },
+        { x: -12, y: -25, s: 0.84, r: 8, layer: 0 },
+        { x: 12, y: -25, s: 0.84, r: -10, layer: 0 },
+        { x: 0, y: 24, s: 0.8, r: 18, layer: 0 },
+        { x: -14, y: 20, s: 0.78, r: -8, layer: 0 },
+        { x: 14, y: 20, s: 0.78, r: 15, layer: 0 },
+        // İç dolgun katman
+        { x: -14, y: -6, s: 0.94, r: 22, layer: 1 },
+        { x: 14, y: -6, s: 0.94, r: -18, layer: 1 },
+        { x: 0, y: -15, s: 0.96, r: 5, layer: 1 },
+        { x: -10, y: 9, s: 0.92, r: -12, layer: 1 },
+        { x: 10, y: 9, s: 0.92, r: 16, layer: 1 },
+        { x: 0, y: 0, s: 1.04, r: 45, layer: 1 },
+      ];
+
+      const drawFloret = (f, gradId) => `
+        <g transform="translate(${f.x}, ${f.y}) rotate(${f.r}) scale(${f.s})">
+          <ellipse cx="0" cy="-7.2" rx="5.2" ry="6.6" fill="url(#${gradId})" stroke="var(--petal-rim)" stroke-opacity="0.4" stroke-width="0.6" />
+          <ellipse cx="0" cy="7.2" rx="5.2" ry="6.6" fill="url(#${gradId})" stroke="var(--petal-rim)" stroke-opacity="0.4" stroke-width="0.6" />
+          <ellipse cx="-7.2" cy="0" rx="6.6" ry="5.2" fill="url(#${gradId})" stroke="var(--petal-rim)" stroke-opacity="0.4" stroke-width="0.6" />
+          <ellipse cx="7.2" cy="0" rx="6.6" ry="5.2" fill="url(#${gradId})" stroke="var(--petal-rim)" stroke-opacity="0.4" stroke-width="0.6" />
+          <circle cx="0" cy="0" r="2.2" fill="url(#${uid}-core)" />
+        </g>
+      `;
+
+      const outerHtml = florets
+        .filter((f) => f.layer === 0)
+        .map((f) => drawFloret(f, `${uid}-petal-deep`))
+        .join("");
+      const innerHtml = florets
+        .filter((f) => f.layer === 1)
+        .map((f) => drawFloret(f, `${uid}-petal-soft`))
+        .join("");
+
+      return `
+        ${halo}
+        <g>${outerHtml}</g>
+        <g class="petal-inner-layer" style="transform-origin:0px 0px;--delay:${delaySec}s">
+          ${innerHtml}
+        </g>
+      `;
+    }
+
+    if (flowerType === "karanfil") {
+      // Karanfil: Fırfırlı ve tırtıklı çok katmanlı yoğun taç yapraklar
+      const ruffledRing = (count, outerR, innerR, gradId, rotOffset, strokeOp) => {
+        const items = [];
+        for (let i = 0; i < count; i++) {
+          const deg = (i * 360) / count + rotOffset;
+          items.push(
+            `<path d="M 0 0 L ${(-innerR).toFixed(1)} ${(-outerR * 0.72).toFixed(1)}
+              Q ${(-innerR * 0.7).toFixed(1)} ${(-outerR * 1.04).toFixed(1)} ${(-innerR * 0.42).toFixed(1)} ${(-outerR * 0.88).toFixed(1)}
+              Q 0 ${(-outerR * 1.12).toFixed(1)} ${(innerR * 0.42).toFixed(1)} ${(-outerR * 0.88).toFixed(1)}
+              Q ${(innerR * 0.7).toFixed(1)} ${(-outerR * 1.04).toFixed(1)} ${(innerR).toFixed(1)} ${(-outerR * 0.72).toFixed(1)} Z"
+              fill="url(#${gradId})" stroke="var(--petal-rim)" stroke-opacity="${strokeOp}" stroke-width="0.8"
+              transform="rotate(${deg.toFixed(1)})" />`
+          );
+        }
+        return items.join("");
+      };
+
+      return `
+        ${halo}
+        <g>${ruffledRing(9, 41, 14, `${uid}-petal-deep`, 0, "0.35")}</g>
+        <g class="petal-inner-layer" style="transform-origin:0px 0px;--delay:${delaySec}s">
+          ${ruffledRing(8, 31, 11.5, `${uid}-petal`, 22, "0.52")}
+          ${ruffledRing(7, 20, 8.2, `${uid}-petal-soft`, 10, "0.68")}
+          <circle cx="0" cy="0" r="6.5" fill="url(#${uid}-petal-deep)" opacity="0.8" />
+          <circle cx="0" cy="0" r="3" fill="url(#${uid}-core)" opacity="0.9" />
+        </g>
+      `;
+    }
+
     // Varsayılan ("gece"): Videodaki ikonik ışıldayan gece çiçeği (4+3 katmanlı parlayan form)
     return `
       ${halo}
@@ -392,7 +655,11 @@
       .join("");
 
     const stemsMarkup = stems
-      .map((s) => {
+      .map((s, stemIdx) => {
+        const stemFlowerType =
+          flowerType === "karisik"
+            ? MIXED_BOUQUET_TYPES[stemIdx % MIXED_BOUQUET_TYPES.length]
+            : flowerType;
         const leavesHtml = s.leaves
           .map((lf) => {
             const pathD =
@@ -441,7 +708,7 @@
             ${leavesHtml}
             <g transform="translate(${s.tipX}, ${s.tipY}) rotate(${s.tilt}) scale(${s.scale})">
               <g class="flower-head" style="transform-origin:0px 0px;--delay:${s.bloomDelay}s">
-                ${renderFlowerHead(flowerType, uid, s.bloomDelay)}
+                ${renderFlowerHead(stemFlowerType, uid, s.bloomDelay)}
               </g>
             </g>
             ${pollenHtml}

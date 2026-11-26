@@ -151,6 +151,120 @@ body.theme-beyaz {
   --accent-strong: #93c5fd;
 }
 
+body.theme-safir {
+  --petal-light: #bfdbfe;
+  --petal-mid: #3b82f6;
+  --petal-deep: #1e3a8a;
+  --petal-rim: #eff6ff;
+  --core-light: #fffbeb;
+  --core-mid: #fde047;
+  --core-deep: #ca8a04;
+  --stem-light: #2fa8b8;
+  --stem-mid: #155e75;
+  --stem-deep: #082f49;
+  --grass-light: #228ca0;
+  --grass-deep: #082838;
+  --glow-rgb: 59, 130, 246;
+  --pollen-color: #dbeafe;
+  --accent: #93c5fd;
+  --accent-strong: #3b82f6;
+}
+
+body.theme-mercan {
+  --petal-light: #ffedd5;
+  --petal-mid: #fb714c;
+  --petal-deep: #9a3412;
+  --petal-rim: #fff7ed;
+  --core-light: #ffffff;
+  --core-mid: #fde047;
+  --core-deep: #d97706;
+  --stem-light: #34b882;
+  --stem-mid: #156e4d;
+  --stem-deep: #083324;
+  --grass-light: #289e6f;
+  --grass-deep: #072e20;
+  --glow-rgb: 251, 113, 76;
+  --pollen-color: #fed7aa;
+  --accent: #fdba74;
+  --accent-strong: #f97316;
+}
+
+body.theme-zumrut {
+  --petal-light: #d1fae5;
+  --petal-mid: #10b981;
+  --petal-deep: #065f46;
+  --petal-rim: #ecfdf5;
+  --core-light: #fffbeb;
+  --core-mid: #fde047;
+  --core-deep: #ca8a04;
+  --stem-light: #34d399;
+  --stem-mid: #0f766e;
+  --stem-deep: #042f2e;
+  --grass-light: #2dd4bf;
+  --grass-deep: #063834;
+  --glow-rgb: 16, 185, 129;
+  --pollen-color: #fef08a;
+  --accent: #6ee7b7;
+  --accent-strong: #10b981;
+}
+
+body.theme-fusya {
+  --petal-light: #fae8ff;
+  --petal-mid: #e845d6;
+  --petal-deep: #701a75;
+  --petal-rim: #fdf4ff;
+  --core-light: #fffbeb;
+  --core-mid: #fde047;
+  --core-deep: #c27803;
+  --stem-light: #2cb59e;
+  --stem-mid: #136966;
+  --stem-deep: #073036;
+  --grass-light: #23968a;
+  --grass-deep: #062b30;
+  --glow-rgb: 232, 69, 214;
+  --pollen-color: #f5d0fe;
+  --accent: #f0abfc;
+  --accent-strong: #d946ef;
+}
+
+body.theme-bordo {
+  --petal-light: #f9a8be;
+  --petal-mid: #a81843;
+  --petal-deep: #45061a;
+  --petal-rim: #ffe4ec;
+  --core-light: #fff6cc;
+  --core-mid: #f59e0b;
+  --core-deep: #92400e;
+  --stem-light: #269c6d;
+  --stem-mid: #11593f;
+  --stem-deep: #06291d;
+  --grass-light: #1e825b;
+  --grass-deep: #052419;
+  --glow-rgb: 190, 24, 75;
+  --pollen-color: #fde68a;
+  --accent: #fda4af;
+  --accent-strong: #e11d48;
+}
+
+body.theme-buz {
+  --petal-light: #f0f9ff;
+  --petal-mid: #7dd3fc;
+  --petal-deep: #0369a1;
+  --petal-rim: #ffffff;
+  --core-light: #ffffff;
+  --core-mid: #bae6fd;
+  --core-deep: #0284c7;
+  --stem-light: #38bdf8;
+  --stem-mid: #15668c;
+  --stem-deep: #082f49;
+  --grass-light: #2aa3c8;
+  --grass-deep: #072a40;
+  --glow-rgb: 125, 211, 252;
+  --pollen-color: #e0f2fe;
+  --accent: #bae6fd;
+  --accent-strong: #38bdf8;
+}
+
 /* ==========================================================================
    Temel Reset & Arka Plan
    ========================================================================== */
@@ -1133,10 +1247,10 @@ body.letter-open .letter-panel {
   color: #ffffff;
 }
 
-/* 5 Çiçek Türü Seçici */
+/* 12 Çiçek Türü Seçici */
 .flower-picker {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -1144,9 +1258,9 @@ body.letter-open .letter-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  padding: 11px 6px 10px;
-  border-radius: 15px;
+  gap: 4px;
+  padding: 9px 5px 8px;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(6, 11, 24, 0.65);
   color: var(--text-soft);
@@ -1198,17 +1312,18 @@ body.letter-open .letter-panel {
   color: var(--accent);
 }
 
-/* 6 Renk & Işık Paleti Seçici */
+/* 12 Renk & Işık Paleti Seçici (2x6 düzenli ızgara) */
 .theme-picker {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 40px));
+  gap: 10px;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
 }
 
 .theme-swatch {
-  width: 42px;
-  height: 42px;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 40px;
   border-radius: 50%;
   border: 2px solid transparent;
   background: rgba(255, 255, 255, 0.04);
