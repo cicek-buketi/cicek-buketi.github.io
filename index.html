@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Gece Buketi — Kişiye Özel Çiçek Buketi</title>
+  <meta name="description" content="Sevdiklerinize yıldızlı gece altında açan, kişiye özel ışıldayan çiçek buketi ve gizli mektup gönderin." />
+
+  <!-- Open Graph / WhatsApp önizleme -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Sana Özel Bir Çiçek Buketi Var" />
+  <meta property="og:description" content="Yıldızlı gece altında senin için açan çiçekleri ve gizli mektubunu görmek için tıkla." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-turkuaz mode-builder">
+  <!-- Yıldızlı gece gökyüzü ve parıltı tuvali -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="sky-nebula" aria-hidden="true"></div>
+
+  <!-- =========================================================
+       HEDİYE EKRANI (Kişiye özel link ile açıldığında)
+       ========================================================= -->
+  <main id="gift-view" class="gift-view hidden" aria-live="polite">
+    <header class="gift-header">
+      <div class="gift-sparkle-line" aria-hidden="true">
+        <span></span><i>✦</i><span></span>
+      </div>
+      <h1 id="gift-title" class="gift-title">Seni Seviyorum</h1>
+    </header>
+
+    <section class="gift-stage" id="gift-stage">
+      <!-- Çiçek buketi alanı -->
+      <div class="bouquet-column" id="bouquet-column">
+        <div class="bouquet-canvas" id="gift-bouquet"></div>
+
+        <!-- Buketin altındaki mühürlü zarf -->
+        <div class="envelope-dock hidden" id="envelope-dock">
+          <button type="button" class="envelope-btn" id="open-letter-btn" aria-expanded="false" aria-controls="letter-panel">
+            <span class="envelope-visual" aria-hidden="true">
+              <span class="env-back"></span>
+              <span class="env-paper"></span>
+              <span class="env-front"></span>
+              <span class="env-flap"></span>
+              <span class="env-seal">♥</span>
+            </span>
+            <span class="envelope-label">
+              <strong>Sana bir mektup var</strong>
+              <small>Açmak için dokun</small>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Çiçeği kapatmadan yanda / altta açılan mektup paneli -->
+      <aside class="letter-panel" id="letter-panel" aria-hidden="true">
+        <div class="letter-card">
+          <div class="letter-card-header">
+            <span class="letter-badge">
+              <span class="letter-badge-heart" aria-hidden="true">♥</span>
+              Senin İçin Not
+            </span>
+            <button type="button" class="letter-close-btn" id="close-letter-btn" aria-label="Mektubu kapat">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="letter-body" id="letter-body"></div>
+          <div class="letter-footer hidden" id="letter-footer">
+            <span class="letter-signature" id="letter-signature"></span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Alt köşede zarif, göze batmayan aksiyonlar -->
+    <nav class="gift-corner-actions" aria-label="Sayfa araçları">
+      <button type="button" class="corner-pill corner-icon-btn" id="replay-gift-btn" title="Animasyonu tekrar izle" aria-label="Animasyonu tekrar izle">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+          <path d="M3 3v5h5" />
+        </svg>
+      </button>
+      <a href="./" class="corner-pill" id="create-own-link">
+        <span aria-hidden="true">✦</span>
+        <span>Kendi buketini oluştur</span>
+      </a>
+    </nav>
+  </main>
+
+  <!-- =========================================================
+       BUKET OLUŞTURUCU STÜDYO (Ana sayfa)
+       ========================================================= -->
+  <main id="builder-view" class="builder-view hidden">
+    <div class="builder-shell">
+      <header class="builder-top">
+        <div class="brand-badge">
+          <span class="brand-dot" aria-hidden="true"></span>
+          Gece Buketi Stüdyosu
+        </div>
+        <h1 class="builder-heading">Kişiye Özel <em>Çiçek Buketi</em> Hazırla</h1>
+        <p class="builder-subheading">
+          Çiçeğini, ışık tonunu ve gizli mektubunu seç; tek tıkla o kişiye özel link oluştur.
+        </p>
+      </header>
+
+      <div class="builder-grid">
+        <!-- SOL: Canlı Buket Önizleme -->
+        <section class="preview-panel" aria-label="Canlı buket önizlemesi">
+          <div class="preview-card">
+            <div class="preview-topbar">
+              <span class="preview-pill">Canlı Önizleme</span>
+              <button type="button" class="preview-replay-btn" id="preview-replay-btn" title="Açılış animasyonunu tekrar oynat">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
+                Tekrar İzle
+              </button>
+            </div>
+
+            <div class="preview-stage">
+              <div class="preview-title-wrap">
+                <div id="preview-title" class="preview-title">Seni Seviyorum</div>
+              </div>
+              <div class="bouquet-canvas preview-bouquet" id="preview-bouquet"></div>
+              <div class="preview-envelope-hint hidden" id="preview-envelope-hint">
+                <span class="mini-env-icon" aria-hidden="true">✉</span>
+                <span>Mektup buketin altında görünecek</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SAĞ: Özelleştirme Formu -->
+        <section class="controls-panel" aria-label="Buket özelleştirme seçenekleri">
+          <form id="builder-form" class="controls-card" novalidate>
+            <!-- 1. Üst Başlık -->
+            <div class="form-group">
+              <label for="input-title" class="form-label">
+                <span>Buket Üstü Başlık</span>
+                <span class="char-count" id="title-count">0 / 70</span>
+              </label>
+              <input
+                type="text"
+                id="input-title"
+                class="text-input"
+                maxlength="70"
+                placeholder="Örn: Seni Seviyorum Elif"
+                autocomplete="off"
+              />
+              <div class="preset-chips" role="group" aria-label="Hazır başlık şablonları">
+                <button type="button" class="chip" data-preset="Seni Seviyorum ">Seni Seviyorum...</button>
+                <button type="button" class="chip" data-preset="İyi ki Varsın ">İyi ki Varsın...</button>
+                <button type="button" class="chip" data-preset="Doğum Günün Kutlu Olsun ">Doğum Günün Kutlu Olsun...</button>
+                <button type="button" class="chip" data-preset="Sana Çiçek Getirdim ">Sana Çiçek Getirdim...</button>
+              </div>
+            </div>
+
+            <!-- 2. Çiçek Türü -->
+            <div class="form-group">
+              <span class="form-label">Çiçek Türü</span>
+              <div class="flower-picker" id="flower-picker" role="radiogroup" aria-label="Çiçek türü seçimi">
+                <button type="button" class="flower-option active" data-flower="gece" role="radio" aria-checked="true">
+                  <span class="flower-option-icon" aria-hidden="true">
+                    <svg viewBox="0 0 36 36"><path d="M18 6 C22 12 22 16 18 18 C14 16 14 12 18 6Z" fill="currentColor"/><path d="M30 18 C24 22 20 22 18 18 C20 14 24 14 30 18Z" fill="currentColor" opacity=".88"/><path d="M18 30 C14 24 14 20 18 18 C22 20 22 24 18 30Z" fill="currentColor" opacity=".78"/><path d="M6 18 C12 14 16 14 18 18 C16 22 12 22 6 18Z" fill="currentColor" opacity=".88"/><circle cx="18" cy="18" r="3" fill="#fff6c4"/></svg>
+                  </span>
+                  <span class="flower-option-name">Gece Çiçeği</span>
+                  <span class="flower-option-tag">Orijinal</span>
+                </button>
+
+                <button type="button" class="flower-option" data-flower="papatya" role="radio" aria-checked="false">
+                  <span class="flower-option-icon" aria-hidden="true">
+                    <svg viewBox="0 0 36 36"><g fill="currentColor"><ellipse cx="18" cy="7.5" rx="2.3" ry="5.5"/><ellipse cx="18" cy="28.5" rx="2.3" ry="5.5"/><ellipse cx="7.5" cy="18" rx="5.5" ry="2.3"/><ellipse cx="28.5" cy="18" rx="5.5" ry="2.3"/><ellipse cx="10.6" cy="10.6" rx="2.2" ry="5.2" transform="rotate(-45 10.6 10.6)"/><ellipse cx="25.4" cy="25.4" rx="2.2" ry="5.2" transform="rotate(-45 25.4 25.4)"/><ellipse cx="25.4" cy="10.6" rx="2.2" ry="5.2" transform="rotate(45 25.4 10.6)"/><ellipse cx="10.6" cy="25.4" rx="2.2" ry="5.2" transform="rotate(45 10.6 25.4)"/></g><circle cx="18" cy="18" r="5" fill="#fbbf24"/></svg>
+                  </span>
+                  <span class="flower-option-name">Papatya</span>
+                  <span class="flower-option-tag">Narin</span>
+                </button>
+
+                <button type="button" class="flower-option" data-flower="gul" role="radio" aria-checked="false">
+                  <span class="flower-option-icon" aria-hidden="true">
+                    <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="11" fill="currentColor" opacity=".45"/><path d="M18 9 C24 9 27 14 25 20 C23 25 16 27 12 23 C8 19 10 12 16 11 C21 10 23 15 21 19 C19 22 15 22 14 19 C13 16 16 14 18 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="flower-option-name">Gül</span>
+                  <span class="flower-option-tag">Romantik</span>
+                </button>
+
+                <button type="button" class="flower-option" data-flower="lale" role="radio" aria-checked="false">
+                  <span class="flower-option-icon" aria-hidden="true">
+                    <svg viewBox="0 0 36 36"><path d="M10 11 C8 20 11 28 18 28 C25 28 28 20 26 11 C23 15 21 16 18 9 C15 16 13 15 10 11Z" fill="currentColor"/></svg>
+                  </span>
+                  <span class="flower-option-name">Lale</span>
+                  <span class="flower-option-tag">Zarif</span>
+                </button>
+
+                <button type="button" class="flower-option" data-flower="sakura" role="radio" aria-checked="false">
+                  <span class="flower-option-icon" aria-hidden="true">
+                    <svg viewBox="0 0 36 36"><g fill="currentColor"><path d="M18 18 C14 13 14 8 16.5 6 L18 8.2 L19.5 6 C22 8 22 13 18 18Z"/><path d="M18 18 C14 13 14 8 16.5 6 L18 8.2 L19.5 6 C22 8 22 13 18 18Z" transform="rotate(72 18 18)"/><path d="M18 18 C14 13 14 8 16.5 6 L18 8.2 L19.5 6 C22 8 22 13 18 18Z" transform="rotate(144 18 18)"/><path d="M18 18 C14 13 14 8 16.5 6 L18 8.2 L19.5 6 C22 8 22 13 18 18Z" transform="rotate(216 18 18)"/><path d="M18 18 C14 13 14 8 16.5 6 L18 8.2 L19.5 6 C22 8 22 13 18 18Z" transform="rotate(288 18 18)"/></g><circle cx="18" cy="18" r="2.5" fill="#fde68a"/></svg>
+                  </span>
+                  <span class="flower-option-name">Sakura</span>
+                  <span class="flower-option-tag">Bahar</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. Renk & Işık Tonu -->
+            <div class="form-group">
+              <span class="form-label">
+                <span>Renk &amp; Işık Tonu</span>
+                <span class="selected-theme-name" id="selected-theme-name">Gece Turkuazı</span>
+              </span>
+              <div class="theme-picker" id="theme-picker" role="radiogroup" aria-label="Renk ve ışık tonu seçimi">
+                <button type="button" class="theme-swatch active" data-theme="turkuaz" data-label="Gece Turkuazı" role="radio" aria-checked="true" aria-label="Gece Turkuazı">
+                  <span class="swatch-orb" style="--orb-a:#a7f8ff;--orb-b:#0ea5b7;"></span>
+                </button>
+                <button type="button" class="theme-swatch" data-theme="kirmizi" data-label="Aşk Kırmızısı" role="radio" aria-checked="false" aria-label="Aşk Kırmızısı">
+                  <span class="swatch-orb" style="--orb-a:#ff9eb5;--orb-b:#dc2655;"></span>
+                </button>
+                <button type="button" class="theme-swatch" data-theme="pembe" data-label="Pembe Rüya" role="radio" aria-checked="false" aria-label="Pembe Rüya">
+                  <span class="swatch-orb" style="--orb-a:#ffe4f1;--orb-b:#ec4899;"></span>
+                </button>
+                <button type="button" class="theme-swatch" data-theme="mor" data-label="Mor Lavanta" role="radio" aria-checked="false" aria-label="Mor Lavanta">
+                  <span class="swatch-orb" style="--orb-a:#ebd6ff;--orb-b:#9333ea;"></span>
+                </button>
+                <button type="button" class="theme-swatch" data-theme="altin" data-label="Altın Işıltı" role="radio" aria-checked="false" aria-label="Altın Işıltı">
+                  <span class="swatch-orb" style="--orb-a:#fef08a;--orb-b:#d97706;"></span>
+                </button>
+                <button type="button" class="theme-swatch" data-theme="beyaz" data-label="Saf Beyaz" role="radio" aria-checked="false" aria-label="Saf Beyaz">
+                  <span class="swatch-orb" style="--orb-a:#ffffff;--orb-b:#94a3b8;"></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4. Mektup Notu -->
+            <div class="form-group">
+              <label for="input-message" class="form-label">
+                <span>Zarf İçi Mektup Notu <em class="optional-tag">(isteğe bağlı)</em></span>
+                <span class="char-count" id="message-count">0 / 700</span>
+              </label>
+              <textarea
+                id="input-message"
+                class="textarea-input"
+                rows="4"
+                maxlength="700"
+                placeholder="Buketin altındaki zarfa tıklayınca açılacak özel notunu buraya yaz..."
+              ></textarea>
+            </div>
+
+            <!-- 5. İmza -->
+            <div class="form-group">
+              <label for="input-sender" class="form-label">
+                <span>Mektup İmzası <em class="optional-tag">(isteğe bağlı)</em></span>
+                <span class="char-count" id="sender-count">0 / 40</span>
+              </label>
+              <input
+                type="text"
+                id="input-sender"
+                class="text-input"
+                maxlength="40"
+                placeholder="Örn: — Seni çok seven Can"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- Oluştur Butonu -->
+            <button type="submit" class="primary-btn" id="generate-btn">
+              <span>Özel Linki Oluştur</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <!-- Üretilen Link & Paylaşım Kutusu -->
+            <div class="share-box hidden" id="share-box" aria-live="polite">
+              <div class="share-box-label">Kişiye özel buket linkin hazır!</div>
+              <div class="share-url-row">
+                <input type="text" id="generated-url" class="share-url-input" readonly aria-label="Oluşturulan özel link" />
+                <button type="button" class="copy-btn" id="copy-url-btn">Kopyala</button>
+              </div>
+              <div class="share-actions">
+                <a href="#" class="secondary-btn" id="open-preview-link" target="_blank" rel="noopener">
+                  Hediye Sayfasını Aç
+                </a>
+                <a href="#" class="whatsapp-btn" id="whatsapp-share-link" target="_blank" rel="noopener">
+                  WhatsApp'ta Paylaş
+                </a>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
